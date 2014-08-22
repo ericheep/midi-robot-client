@@ -18,11 +18,16 @@ The channel you send MIDI to chooses the robot your are controlling.
 
 Check out Ableton_Setup.png for additional visual guidance in setting up Ableton for robot control.
 
-Troubleshooting:
-!!! If everything seems to be in order but your still not able to control the robots, you may need to restart your computer. The IAC bus can mysteriously malfunction !!!
+TODO: Add instructions for serial robots, their implementation will be slightly different than the Hiduino robots.
 
-<pre>Error: [chuck](via OSC): UDP_Transmitter: unknown host: chuckServer.local</pre>
+Troubleshooting
+---------------
+If everything seems to be in order but your still not able to control the robots, you may need to restart your computer. The IAC bus can mysteriously malfunction !!!
+
+    Error: [chuck](via OSC): UDP_Transmitter: unknown host: chuckServer.local
+
 Meaning: Your ethernet is not connecting to the server. 
 
-Error: Segmentation Fault (of any kind)
+    Error: Segmentation Fault (of any kind)
+
 Meaning: Your ethernet is (probably) not connecting to the serverakes the robots midi addressable over a network
