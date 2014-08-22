@@ -8,7 +8,9 @@
 
 MidiIn min;
 MidiMsg msg;
-OscSend xmit;
+//OscSend xmit;
+OscOut oout:
+
 int status, chan, noteNum, vel;
 
 <<<"","">>>;
@@ -25,7 +27,9 @@ else <<<"Failed to open IAC Bus","">>>;
 <<<"","">>>;
 
 // connect to robot server
-xmit.setHost("chuckServer.local",11235); 
+//xmit.setHost("chuckServer.local",11235); 
+("chuckServer.local",11235) => oout.dest;
+
 
 // spork main loop
 spork ~ midiLoop();
@@ -47,78 +51,100 @@ fun void midiLoop(){
                 msg.data3 => vel;
                 if(chan==0){ // maha devi
                     if(noteNum > 59 & noteNum < 74){
-                        xmit.startMsg("/devibot,ii");
+                        oout.start("/devibot");
                         oscOut(noteNum, vel);
+                        // xmit.startMsg("/devibot,ii");
+                        // oscOut(noteNum, vel);
                     }
                 }
                 if(chan==1){ // gana pati
                     if(noteNum > 59 & noteNum < 71){
-                        xmit.startMsg("/ganapati,ii");
+                        oout.start("/ganipati");
                         oscOut(noteNum, vel);
+                        // xmit.startMsg("/ganapati,ii");
+                        // oscOut(noteNum, vel);
                     }
                 }
                 if(chan==2){ // breakbot
                     if(noteNum > 59 & noteNum < 86){
-                        xmit.startMsg("/drumBot,ii");
+                        oout.start("/drumBot");
                         oscOut(noteNum, vel);
+                        // xmit.startMsg("/drumBot,ii");
+                        // oscOut(noteNum, vel);
                     }
                 }
                 if(chan==3){ // clappers
                     if(noteNum>59 & noteNum<81){
-                        xmit.startMsg("/clappers,ii");
+                        oout.start("/clappers");
                         oscOut(noteNum, vel);
+                        // xmit.startMsg("/clappers,ii");
+                        // oscOut(noteNum, vel);
                     }
                 }
                 if(chan==4){ // jackbox percussion
                     if(noteNum>59 & noteNum<89){
-                        xmit.startMsg("/jackperc,ii");
-                        oscOut(noteNum,vel);
+                        oout.start("/jackperc");
+                        oscOut(noteNum, vel);
+                        // xmit.startMsg("/jackperc,ii");
+                        // oscOut(noteNum,vel);
                     }
                 }
                 if(chan==5){ // jackbox bass
                     if(noteNum>59-8 & noteNum<84-8){
-                        xmit.startMsg("/jackbass,ii");
-                        oscOut(noteNum+8,vel);
+                        oout.start("/jackbass");
+                        oscOut(noteNum + 8, vel);
+                        // xmit.startMsg("/jackbass,ii");
+                        // oscOut(noteNum+8,vel);
                     }
                 }
                 if(chan==6){ // jackbox guitar
                     if(noteNum>59-8 & noteNum<94-8){
-                        xmit.startMsg("/jackgtr,ii");
-                        oscOut(noteNum+8,vel);
+                        oout.start("/jackgtr");
+                        oscOut(noteNum + 8, vel);
+                        // xmit.startMsg("/jackgtr,ii");
+                        // oscOut(noteNum+8,vel);
                     }
                 }
-                /*
                 if(chan==7){ // MDarimBot
-                    if(noteNum > 59-8 & noteNum 94 - 8){
-                        xmit.startMsg("/MDarimBot,ii");
-                        oscOut(noteNum+8,vel);
+                    if(noteNum > 31 & noteNum 94){
+                        oout.start("/MDarimBot");
+                        oscOut(noteNum, vel);
+                        // xmit.startMsg("/MDarimBot,ii");
+                        // oscOut(noteNum+8,vel);
                     }
                 }
                 if(chan==8){ // Trimpbeat
-                    if(noteNum > 59-8 & noteNum 94 - 8){
-                        xmit.startMsg("/Trimpbeat,ii");
-                        oscOut(noteNum+8,vel);
+                    if(noteNum > 59 & noteNum 79){
+                        oout.start("/Trimpbeat");
+                        oscOut(noteNum, vel);
+                        // xmit.startMsg("/Trimpbeat,ii");
+                        // oscOut(noteNum+8,vel);
                     }
                 }
                 if(chan==9){ // Trimpspin
-                    if(noteNum > 59-8 & noteNum 94 - 8){
-                        xmit.startMsg("/Trimpspin,ii");
-                        oscOut(noteNum+8,vel);
+                    if(noteNum > 59 & noteNum 79){
+                        oout.start("/Trimpspin");
+                        oscOut(noteNum, vel);
+                        // xmit.startMsg("/Trimpspin,ii");
+                        // oscOut(noteNum+8,vel);
                     }
                 } 
-                */
             }
             if(status==8){ // note off
                 if(chan==5){ // jackbox bass
                     if(noteNum>59-8 & noteNum<84-8){
-                        xmit.startMsg("/jackbass,ii");
-                        oscOut(noteNum+8,0);
+                        oout.start("/jackbass");
+                        oscOut(noteNum + 8, 0);
+                        // xmit.startMsg("/jackbass,ii");
+                        // oscOut(noteNum+8,0);
                     }
                 }
                 if(chan==6){ // jackbox guitar
                     if(noteNum>59-8 & noteNum<94-8){
-                        xmit.startMsg("/jackgtr,ii");
-                        oscOut(noteNum+8,0);
+                        oout.start("/jackgtr");
+                        oscOut(noteNum + 8, 0);
+                        // xmit.startMsg("/jackgtr,ii");
+                        // oscOut(noteNum+8,0);
                     }
                 }
             }
@@ -127,6 +153,9 @@ fun void midiLoop(){
 }
 
 fun void oscOut(int newNoteNum, int newVel){
-    xmit.addInt(newNoteNum-60);
-    xmit.addInt(newVel);
+    oout.add(newNoteNum - 60);
+    oout.add(newVel);
+    oout.send()
+    // xmit.addInt(newNoteNum-60);
+    // xmit.addInt(newVel);
 }
