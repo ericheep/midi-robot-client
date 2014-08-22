@@ -87,6 +87,26 @@ fun void midiLoop(){
                         oscOut(noteNum+8,vel);
                     }
                 }
+                /*
+                if(chan==7){ // MDarimBot
+                    if(noteNum > 59-8 & noteNum 94 - 8){
+                        xmit.startMsg("/MDarimBot,ii");
+                        oscOut(noteNum+8,vel);
+                    }
+                }
+                if(chan==8){ // Trimpbeat
+                    if(noteNum > 59-8 & noteNum 94 - 8){
+                        xmit.startMsg("/Trimpbeat,ii");
+                        oscOut(noteNum+8,vel);
+                    }
+                }
+                if(chan==9){ // Trimpspin
+                    if(noteNum > 59-8 & noteNum 94 - 8){
+                        xmit.startMsg("/Trimpspin,ii");
+                        oscOut(noteNum+8,vel);
+                    }
+                } 
+                */
             }
             if(status==8){ // note off
                 if(chan==5){ // jackbox bass
