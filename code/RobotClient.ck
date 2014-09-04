@@ -8,7 +8,6 @@
 
 MidiIn min;
 MidiMsg msg;
-//OscSend xmit;
 OscOut oout;
 
 int status, chan, noteNum, vel;
@@ -27,9 +26,7 @@ else <<<"Failed to open IAC Bus","">>>;
 <<<"","">>>;
 
 // connect to robot server
-//xmit.setHost("chuckServer.local",11235); 
 ("chuckServer.local",11235) => oout.dest;
-
 
 // spork main loop
 spork ~ midiLoop();
@@ -92,16 +89,13 @@ fun void midiLoop(){
                     }
                 }
                 if(chan==7){ // MDarimBot
-                    oout.start("/MDarimBot");
-                    oscSerialOut(noteNum, vel);
+                    oscSerialOut("/MDarimBot", noteNum, vel);
                 }
                 if(chan==8){ // Trimpbeat
-                    oout.start("/Trimpbeat");
-                    oscSerialOut(noteNum, vel);
+                    oscSerialOut("/Trimpbeat", noteNum, vel);
                 }
                 if(chan==9){ // Trimpspin
-                    oout.start("/Trimpspin");
-                    oscSerialOut(noteNum, vel);
+                    oscSerialOut("/Trimpspin", noteNum, vel);
                 } 
             }
             if(status==8){ // note off
@@ -126,9 +120,10 @@ fun void midiLoop(){
     }
 }
 
-fun void oscSerialOut(int newNoteNum, int newVel) {
-    oout.add(newNoteNum);
-    oout.add(newVel);
+fun void oscSerialOut(string addr, int note, int vel) {
+    oout.start(addr);
+    oout.add(note);
+    oout.add(vel);
     oout.send();
 }
 
